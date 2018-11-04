@@ -1,14 +1,19 @@
-# Five-step setup for private Docker repository with Let's Encrypt SSL
+# Setup Private Docker Registry
 
-Make sure you have a domain name and SSH access to an instance. This works well under a DigitalOcean's Ubuntu with Docker and Docker Compose installed.
+## Features
+
+1. AWS S3 bucket for Registry Data
+2. Uses Letsencrypt certs
+3. Tested on AWS S3
+
+Make sure you have a domain name and SSH access to an instance. This works well on Ubuntu servers with Docker and Docker Compose installed.
 
 ## Steps
 
-1. Set in `docker-compose.yml` the **REGISTRY_USER, REGISTRY_PASSWORD and DOMAIN** on the Nginx args.
-2. On `ssl_gen` set **DOMAIN** value with your domain.
-3. `docker-compose up -d`
-4. `chmod +x *.sh && ./ssl_gen.sh`  
-5. After it succeeds, start it with `docker-compose restart`
+1. Create `.env` based on `.env.example` and set your vars.
+2. `docker-compose up -d`
+3. `chmod +x *.sh && ./ssl_gen.sh`  
+4. After it succeeds, start it with `docker-compose restart`
 
 ## After it succeeds
 
@@ -21,10 +26,3 @@ Make sure you have a domain name and SSH access to an instance. This works well 
 This will schedule a renewal of the SSL cert with Let's Encrypt every 15 days.
 1. `crontab -u $USER -e`
 2. `0 0 */15 * *  /path/to/registry_files/ssl_renew.sh`
-
-### Need to install Docker in your VPS machine?
-https://docs.docker.com/install/linux/docker-ce/ubuntu/
-
-https://docs.docker.com/compose/install/
-
-### Be sure to donate to **letsencrypt.org**!
