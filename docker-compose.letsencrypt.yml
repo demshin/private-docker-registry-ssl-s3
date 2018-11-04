@@ -1,0 +1,12 @@
+version: "3"
+
+services: 
+  letsencrypt:
+    image: quay.io/letsencrypt/letsencrypt:latest
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./data:/etc/letsencrypt
+      - ./lib:/var/lib/letsencrypt
+    entrypoint: letsencrypt certonly --standalone --non-interactive --agree-tos -m ${EMAIL} -d ${DOMAIN} 
