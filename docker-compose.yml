@@ -3,13 +3,13 @@ version: "3.4"
 services:
   nginx:
     container_name: nginx
-    image: my_docker_registry:latest 
+    image: docker_registry:latest 
     build:
       context: ./nginx
       args:
-        - REGISTRY_USER=user
-        - REGISTRY_PASSWORD=password
-        - DOMAIN=my_domain.com
+        - REGISTRY_USER=${USER}
+        - REGISTRY_PASSWORD=${PASSWORD}
+        - DOMAIN=${DOMAIN}
       dockerfile: ./nginx.dockerfile
     ports:
       - 80:80
@@ -31,7 +31,12 @@ services:
     ports:
       - 127.0.0.1:5000:5000
     environment:
-      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+      REGISTRY_STORAGE: "s3"
+      REGISTRY_STORAGE_S3_REGION: ${S3_REGION}
+      REGISTRY_STORAGE_S3_BUCKET: ${S3_BUCKET}
+      REGISTRY_STORAGE_S3_ACCESSKEY: ${S3_ACCESSKEY}
+      REGISTRY_STORAGE_S3_SECRETKEY: ${S3_SECRETKEY}
     volumes:
       - ./data:/data
     networks:
@@ -45,4 +50,3 @@ services:
 networks:
   my-registry-network:
     driver: bridge
-
