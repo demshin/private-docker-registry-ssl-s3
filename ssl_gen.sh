@@ -8,4 +8,7 @@ docker run -it --rm \
     certbot/certbot \
     certonly \
     --webroot --webroot-path=/data/letsencrypt \
+    --non-interactive \
+    --agree-tos \
+    -m $EMAIL
     -d $DOMAIN
