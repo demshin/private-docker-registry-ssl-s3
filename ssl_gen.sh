@@ -1,7 +1,6 @@
-#!/usr/bin/env bash
-DOMAIN=domain.com
+#!/bin/bash
 
-# tip, you can add more -d. ie:  -d www.domain.com
+source .env
 
 docker run -it --rm \
     -v $PWD/certs:/etc/letsencrypt \
