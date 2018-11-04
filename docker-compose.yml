@@ -3,18 +3,22 @@ version: "3.4"
 services:
   nginx:
     container_name: nginx
-    image: docker_registry:latest 
-    build:
-      context: ./nginx
-      args:
-        - REGISTRY_USER=${USER}
-        - REGISTRY_PASSWORD=${PASSWORD}
-        - DOMAIN=${DOMAIN}
-      dockerfile: ./nginx.dockerfile
+    image: nginx:latest 
+    restart: always
+    links:
+      - registry
+    # build:
+    #   context: ./nginx
+    #   args:
+    #     - REGISTRY_USER=${USER}
+    #     - REGISTRY_PASSWORD=${PASSWORD}
+    #     - DOMAIN=${DOMAIN}
+    # dockerfile: ./nginx.dockerfile
     ports:
       - 80:80
       - 443:443
     volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d
       - ./certs:/etc/letsencrypt
       - ./certs-data:/data/letsencrypt
     networks:
