@@ -10,5 +10,5 @@ docker run -it --rm \
     --webroot --webroot-path=/data/letsencrypt \
     --non-interactive \
     --agree-tos \
-    -m $EMAIL
+    -m $EMAIL \
     -d $DOMAIN
