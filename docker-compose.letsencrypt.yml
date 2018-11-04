@@ -9,6 +9,11 @@ services:
     volumes:
       - ./certs:/etc/letsencrypt
       - ./lib:/var/lib/letsencrypt
-    entrypoint: sh - c "letsencrypt certonly --standalone --non-interactive --agree-tos -m ${EMAIL} -d ${DOMAIN} &&\
-                cp /etc/letsencrypt/live/${DOMAIN}/privkey.pem /etc/letsencrypt/live/${DOMAIN}/domain.key && \
-                cat /etc/letsencrypt/live/${DOMAIN}/cert.pem /etc/letsencrypt/live/${DOMAIN}/chain.pem > domain.crt"
+      # - ./entrypoint.letsencrypt.sh:/docker-entrypoint-initdb.d/entrypoint.letsencrypt.sh
+    command:
+      - /bin/sh
+      - -c
+      - |
+        letsencrypt certonly --standalone --non-interactive --agree-tos -m ${EMAIL} -d ${DOMAIN}
+        cp /etc/letsencrypt/live/${DOMAIN}/privkey.pem /etc/letsencrypt/live/${DOMAIN}/domain.key
+        cat /etc/letsencrypt/live/${DOMAIN}/cert.pem /etc/letsencrypt/live/${DOMAIN}/chain.pem > domain.crt
