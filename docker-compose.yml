@@ -1,59 +1,24 @@
-version: "3.4"
+version: "3"
 
 services:
-  nginx:
-    container_name: nginx
-    image: nginx:latest 
-    restart: always
-    links:
-      - registry
-    # build:
-    #   context: ./nginx
-    #   args:
-    #     - REGISTRY_USER=${USER}
-    #     - REGISTRY_PASSWORD=${PASSWORD}
-    #     - DOMAIN=${DOMAIN}
-    # dockerfile: ./nginx.dockerfile
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d
-      - ./certs:/etc/letsencrypt
-      - ./certs-data:/data/letsencrypt
-    networks:
-      - my-registry-network
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "1000k"
-        max-file: "3"
-
   registry:
     container_name: registry
-    image: registry:2
+    restart: always
+    image: registry:latest
     ports:
-      - 127.0.0.1:5000:5000
+      - 443:443
     environment:
+      REGISTRY_HTTP_ADDR: 0.0.0.0:443
+      REGISTRY_HTTP_TLS_CERTIFICATE: ./certs/live/${DOMAIN}/domain.crt
+      REGISTRY_HTTP_TLS_KEY: ./certs/live/${DOMAIN}/domain.key
       REGISTRY_STORAGE_DELETE_ENABLED: "true"
       REGISTRY_STORAGE: "s3"
       REGISTRY_STORAGE_S3_REGION: ${S3_REGION}
       REGISTRY_STORAGE_S3_BUCKET: ${S3_BUCKET}
       REGISTRY_STORAGE_S3_ACCESSKEY: ${S3_ACCESSKEY}
       REGISTRY_STORAGE_S3_SECRETKEY: ${S3_SECRETKEY}
-      REGISTRY_AUTH: "htpasswd"
+      REGISTRY_AUTH: htpasswd
       REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
       REGISTRY_AUTH_HTPASSWD_PATH: "/data/auth/htpasswd"
     volumes:
-      - ./data:/data
-    networks:
-      - my-registry-network
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "1000k"
-        max-file: "3"
-
-networks:
-  my-registry-network:
-    driver: bridge
+      - ./certs:/certs
