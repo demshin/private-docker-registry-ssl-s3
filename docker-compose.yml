@@ -37,6 +37,9 @@ services:
       REGISTRY_STORAGE_S3_BUCKET: ${S3_BUCKET}
       REGISTRY_STORAGE_S3_ACCESSKEY: ${S3_ACCESSKEY}
       REGISTRY_STORAGE_S3_SECRETKEY: ${S3_SECRETKEY}
+      REGISTRY_AUTH: "htpasswd"
+      REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
+      REGISTRY_AUTH_HTPASSWD_PATH: "/data/auth/htpasswd"
     volumes:
       - ./data:/data
     networks:
