@@ -1,5 +1,9 @@
 # Setup Private Docker Registry
 
+## Why
+
+Because docker registry has [issue](https://github.com/docker/distribution/issues/2545).
+
 ## Features
 
 1. AWS S3 bucket for Registry Data
@@ -11,10 +15,10 @@ Make sure you have a domain name and SSH access to an instance. This works well 
 
 1. Clone repo.
 2. Create `.env` based on `.env.example` and set your vars.
-3. Get letsecrypt certs `docker-compose -f docker-compose.letsencrypt.yml up -d`
+3. Get letsecrypt certs `docker-compose -f docker-compose.letsencrypt.yml up`
 4. Generate auth date `./set_registry_auth.sh`
-5. Start registry with `docker-compose -d docker-compose.registry.yml up -d`
-6. You can renew 
+5. Start registry with `docker-compose -f docker-compose.registry.yml up -d`
+6. You can renew cert manually, see 3.
 
 ## After it succeeds
 
