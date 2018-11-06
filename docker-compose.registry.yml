@@ -10,8 +10,8 @@ services:
     environment:
       REGISTRY_HTTP_ADDR: 0.0.0.0:443
       REGISTRY_HTTP_HOST: "https://${DOMAIN}"
-      REGISTRY_HTTP_TLS_CERTIFICATE: ./data/certs/live/fullchain.pem
-      REGISTRY_HTTP_TLS_KEY: ./data/certs/live/privkey.pem
+      REGISTRY_HTTP_TLS_CERTIFICATE: ./data/certs/live/${DOMAIN}/fullchain.pem
+      REGISTRY_HTTP_TLS_KEY: ./data/certs/live/${DOMAIN}/privkey.pem
       REGISTRY_STORAGE_DELETE_ENABLED: "true"
       REGISTRY_STORAGE: "s3"
       REGISTRY_STORAGE_S3_REGION: ${S3_REGION}
