@@ -21,10 +21,3 @@ Make sure you have a domain name and SSH access to an instance. This works well 
 1. `docker login registry.example.com -u username` and enter your password.
 2. It should say `Login Succeeded`
 3. You can use it.
-
-## Automatic cron setup
-
-This will schedule a renewal of the SSL cert with Let's Encrypt every 15 days.
-
-1. `crontab -u $USER -e`
-2. `0 0 */15 * *  /path/to/registry_files/ssl_renew.sh`
