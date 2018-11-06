@@ -9,6 +9,7 @@ services:
       - 443:443
     environment:
       REGISTRY_HTTP_ADDR: 0.0.0.0:443
+      REGISTRY_HTTP_HOST: "https://${DOMAIN}"
       REGISTRY_HTTP_TLS_CERTIFICATE: ./data/certs/live/${DOMAIN}/fullchain.pem
       REGISTRY_HTTP_TLS_KEY: ./data/certs/live/${DOMAIN}/privkey.pem
       REGISTRY_STORAGE_DELETE_ENABLED: "true"
