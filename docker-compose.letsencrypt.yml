@@ -7,6 +7,6 @@ services:
       - "443:443"
       - "80:80"
     volumes:
-      - ./certs:/etc/letsencrypt
+      - ./data/certs:/etc/letsencrypt
       - ./lib:/var/lib/letsencrypt
     entrypoint: letsencrypt certonly --standalone --non-interactive --agree-tos -m ${EMAIL} -d ${DOMAIN}
