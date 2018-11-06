@@ -11,7 +11,7 @@ services:
       REGISTRY_HTTP_ADDR: 0.0.0.0:443
       REGISTRY_HTTP_HOST: "https://${DOMAIN}"
       REGISTRY_LOG_ACCESSLOG_DISABLED: "true"
-      REGISTRY_LOG_LEVEL: "verbose"
+      REGISTRY_LOG_LEVEL: "debug"
       REGISTRY_HTTP_TLS_CERTIFICATE: ./data/live/${DOMAIN}/fullchain.pem
       REGISTRY_HTTP_TLS_KEY: ./data/live/${DOMAIN}/privkey.pem
       REGISTRY_STORAGE_DELETE_ENABLED: "true"
