@@ -22,3 +22,4 @@ services:
       REGISTRY_AUTH_HTPASSWD_PATH: "/data/auth/htpasswd"
     volumes:
       - ./certs:/certs
+      - ./data:/data
