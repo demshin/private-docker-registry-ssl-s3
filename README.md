@@ -14,7 +14,7 @@ Make sure you have a domain name and SSH access to an instance. This works well 
 ## Steps
 
 1. Clone repo.
-2. Create `.env` based on `.env.example` and set your vars.
+2. Create `.env` based on `.env.example` and set your vars. (Check that the aws access key has no symbol `/` or `space`.)
 3. Get letsecrypt certs `docker-compose -f docker-compose.letsencrypt.yml up`
 4. Generate auth date `./set_registry_auth.sh`
 5. Start registry with `docker-compose -f docker-compose.registry.yml up -d`
