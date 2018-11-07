@@ -13,8 +13,8 @@ services:
       REGISTRY_LOG_ACCESSLOG_DISABLED: "true"
       REGISTRY_LOG_LEVEL: "error"
       REGISTRY_HEALTH_STORAGEDRIVER_ENABLED: "false"
-      REGISTRY_HTTP_TLS_CERTIFICATE: ./data/live/${DOMAIN}/fullchain.pem
-      REGISTRY_HTTP_TLS_KEY: ./data/live/${DOMAIN}/privkey.pem
+      REGISTRY_HTTP_TLS_CERTIFICATE: ./data/certs/live/${DOMAIN}/fullchain.pem
+      REGISTRY_HTTP_TLS_KEY: ./data/certs/live/${DOMAIN}/privkey.pem
       REGISTRY_STORAGE_DELETE_ENABLED: "true"
       REGISTRY_STORAGE: "s3"
       REGISTRY_STORAGE_S3_REGION: ${S3_REGION}
