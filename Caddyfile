@@ -1,0 +1,7 @@
+{
+	email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+	reverse_proxy registry:5000
+}

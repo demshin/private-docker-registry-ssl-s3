@@ -1,0 +1,37 @@
+services:
+  caddy:
+    image: caddy:2.11.7
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+      ACME_EMAIL: ${ACME_EMAIL:?set ACME_EMAIL in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # Certificates and ACME account; losing them means re-issuing and hitting LE rate limits
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - registry
+
+  registry:
+    image: registry:3.1.2
+    restart: unless-stopped
+    # No published ports: only Caddy talks to the registry
+    environment:
+      REGISTRY_STORAGE_S3_REGION: ${S3_REGION:?set S3_REGION in .env}
+      REGISTRY_STORAGE_S3_BUCKET: ${S3_BUCKET:?set S3_BUCKET in .env}
+      REGISTRY_STORAGE_S3_ACCESSKEY: ${S3_ACCESSKEY:-}
+      REGISTRY_STORAGE_S3_SECRETKEY: ${S3_SECRETKEY:-}
+      REGISTRY_STORAGE_S3_REGIONENDPOINT: ${S3_ENDPOINT:-}
+      REGISTRY_STORAGE_S3_FORCEPATHSTYLE: ${S3_FORCEPATHSTYLE:-false}
+    volumes:
+      - ./config.yml:/etc/distribution/config.yml:ro
+      - ./auth:/auth:ro
+
+volumes:
+  caddy_data:
+  caddy_config:

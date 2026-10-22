@@ -1,0 +1,19 @@
+version: 0.1
+
+log:
+  level: info
+
+http:
+  # Plain HTTP: TLS is terminated by Caddy
+  addr: :5000
+
+auth:
+  htpasswd:
+    realm: Registry
+    path: /auth/htpasswd
+
+storage:
+  # Connection settings come from REGISTRY_STORAGE_S3_* in compose.yaml
+  s3: {}
+  delete:
+    enabled: true
