@@ -1,0 +1,54 @@
+# Local end-to-end test: RustFS stands in for S3, Caddy serves https://localhost:8443
+# with its internal CA. See "Testing locally" in README.md.
+# Own project name and auth dir, so the test never touches a real setup in the same checkout.
+name: registry-test
+
+services:
+  rustfs:
+    image: rustfs/rustfs:1.0.3
+    environment:
+      RUSTFS_ACCESS_KEY: testaccesskey
+      RUSTFS_SECRET_KEY: testsecretkey
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "http://localhost:9000/health"]
+      interval: 2s
+      retries: 15
+
+  create-bucket:
+    image: rustfs/rustfs:1.0.3
+    entrypoint:
+      - curl
+      - -fsS
+      - --aws-sigv4
+      - aws:amz:us-east-1:s3
+      - -u
+      - testaccesskey:testsecretkey
+      - -X
+      - PUT
+      - http://rustfs:9000/registry
+    depends_on:
+      rustfs:
+        condition: service_healthy
+
+  registry:
+    environment:
+      REGISTRY_STORAGE_S3_REGION: us-east-1
+      REGISTRY_STORAGE_S3_BUCKET: registry
+      REGISTRY_STORAGE_S3_ACCESSKEY: testaccesskey
+      REGISTRY_STORAGE_S3_SECRETKEY: testsecretkey
+      REGISTRY_STORAGE_S3_REGIONENDPOINT: http://rustfs:9000
+      REGISTRY_STORAGE_S3_FORCEPATHSTYLE: "true"
+      # Presigned redirects would point the Docker daemon at rustfs:9000, which it can't resolve
+      REGISTRY_STORAGE_REDIRECT_DISABLE: "true"
+    volumes:
+      - ./test-auth:/auth:ro
+    depends_on:
+      create-bucket:
+        condition: service_completed_successfully
+
+  caddy:
+    environment:
+      # Caddy issues certificates for localhost from its internal CA
+      DOMAIN: localhost
+    ports: !override
+      - "127.0.0.1:8443:443"
